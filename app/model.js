@@ -9,8 +9,7 @@ let DBData = {}
 function addRecord (data) {
   DBData[data.id] = {
     content: data.content,
-    x: data.x,
-    y: data.y,
+    voice: data.voice,
     time: new Date(),
     id: data.id
   }

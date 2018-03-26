@@ -1,6 +1,7 @@
 const schedule = require('node-schedule')
 const model = require('./model')
-const MAX = 0.1
+const SPLIT = 'iwoqbfiasdbguiohewuiftsadf'
+
 function initService () {
   schedule.scheduleJob('*/5 * * * * *', function () {
     model.refresh()
@@ -8,22 +9,17 @@ function initService () {
 }
 
 async function getNearbyClient (ctx) {
-  console.log('getNearbyClient:')
   let data = ctx.request.query // ctx.request.body
+  console.log('getNearbyClient:' + data.voice)
   let output = ''
   let allClient = model.getAllRecord()
-  let x = parseFloat(data.x)
-  let y = parseFloat(data.y)
   for (let i in allClient) {
     // console.log(allClient[i])
     // console.log(data.id, allClient[i].id, data.id === allClient[i].id)
     if (data.id === allClient[i].id) continue
-    let x1 = parseFloat(allClient[i].x)
-    let y1 = parseFloat(allClient[i].y)
-    let dis = (x - x1) * (x - x1) + (y - y1) * (y - y1)
-    console.log('dis:', dis)
-    if (dis < MAX) {
-      output += allClient[i].content + 'iwoqbfiasdbguiohewuiftsadf'
+    console.log('voice:', allClient[i].voice)
+    if (data.voice === allClient[i].voice) {
+      output += allClient[i].content + SPLIT
     }
   }
   ctx.body = output
@@ -34,8 +30,7 @@ async function addClient (ctx) {
   // console.log(data)
   model.addRecord({
     id: data.id,
-    x: data.x,
-    y: data.y,
+    voice: data.voice,
     content: data.content
   })
   console.log('addClient:', data)
