@@ -11,7 +11,9 @@ function addRecord (data) {
     content: data.content,
     voice: data.voice,
     time: new Date(),
-    id: data.id
+    id: data.id,
+    x: data.x,
+    y: data.y
   }
 }
 
@@ -21,7 +23,7 @@ function getAllRecord () {
 
 function refresh () {
   for (let i in DBData) {
-    if ((new Date()).getTime() - DBData[i].time.getTime() > 20 * 1000) {
+    if ((new Date()).getTime() - DBData[i].time.getTime() > 30 * 1000) {
       console.log('Delete: ', DBData[i])
       delete DBData[i]
     }
